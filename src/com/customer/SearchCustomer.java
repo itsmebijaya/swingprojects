@@ -6,6 +6,7 @@
 package com.customer;
 
 import com.dbhelper.DBhelper;
+import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.ByteArrayOutputStream;
@@ -13,13 +14,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -30,35 +34,18 @@ import javax.swing.JOptionPane;
  *
  * @author Bijaya Khatiwada
  */
-public class AddCustomer extends javax.swing.JInternalFrame {
+public class SearchCustomer extends javax.swing.JInternalFrame {
+    
 
-    public AddCustomer() throws SQLException {
+    public SearchCustomer() throws SQLException {
         initComponents();
-        autoid();
+        getId();
          }
     
         String path = null;
         byte[] userimage = null;
 
-    public void autoid() throws SQLException {
-
-        Connection cn = DBhelper.getConnection();
-        Statement st = cn.createStatement();
-        ResultSet rs = st.executeQuery("select MAX(id) from customer");
-
-        if (rs.next()) {
-            if (rs.getString("MAX(id)") == null) {
-                txtid.setText("CS001");
-
-            } else {
-                long id = Long.parseLong(rs.getString("MAX(id)").substring(2, rs.getString("MAX(id)").length()));
-                id++;
-                txtid.setText("CS" + String.format("%03d", id));
-
-            }
-        }
-
-    }
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -77,7 +64,6 @@ public class AddCustomer extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtaddress = new javax.swing.JTextArea();
         jLabel6 = new javax.swing.JLabel();
-        txtid = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -88,8 +74,10 @@ public class AddCustomer extends javax.swing.JInternalFrame {
         txtcontact = new javax.swing.JTextField();
         txtphoto = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        update = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        txtcustid = new javax.swing.JComboBox<>();
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 102));
 
@@ -179,9 +167,6 @@ public class AddCustomer extends javax.swing.JInternalFrame {
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
         jLabel6.setText("Customer ID");
 
-        txtid.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
-        txtid.setText("jLabel7");
-
         jPanel2.setBackground(new java.awt.Color(102, 102, 102));
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -251,10 +236,10 @@ public class AddCustomer extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton2.setText("Add Record");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        update.setText("Update");
+        update.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                updateActionPerformed(evt);
             }
         });
 
@@ -262,6 +247,20 @@ public class AddCustomer extends javax.swing.JInternalFrame {
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setText("Find");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        txtcustid.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"--- Select Id ---"}));
+        txtcustid.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtcustidActionPerformed(evt);
             }
         });
 
@@ -277,7 +276,7 @@ public class AddCustomer extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(34, 34, 34)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(update, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(36, 36, 36)
                                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
@@ -292,9 +291,11 @@ public class AddCustomer extends javax.swing.JInternalFrame {
                                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(57, 57, 57)
-                        .addComponent(txtid)))
-                .addContainerGap(103, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(txtcustid, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(71, 71, 71)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -302,7 +303,8 @@ public class AddCustomer extends javax.swing.JInternalFrame {
                 .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtid))
+                    .addComponent(jButton4)
+                    .addComponent(txtcustid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -314,10 +316,10 @@ public class AddCustomer extends javax.swing.JInternalFrame {
                             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+                                .addComponent(update, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
                                 .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(119, Short.MAX_VALUE))
+                .addContainerGap(123, Short.MAX_VALUE))
         );
 
         pack();
@@ -358,9 +360,9 @@ public class AddCustomer extends javax.swing.JInternalFrame {
                 userimage=baos.toByteArray();
             
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(AddCustomer.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SearchCustomer.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(AddCustomer.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SearchCustomer.class.getName()).log(Level.SEVERE, null, ex);
         }
             
         
@@ -368,9 +370,11 @@ public class AddCustomer extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
+    
+        // * ------ Update Action Performing ------ * //
         
-        String id=txtid.getText();
+       String id=(String) txtcustid.getSelectedItem();
         String firstname=txtfirstname.getText();
         String lastname=txtlastname.getText();
         String nic=txtnic.getText();
@@ -398,61 +402,161 @@ public class AddCustomer extends javax.swing.JInternalFrame {
         {
             try {
             Connection cn=DBhelper.getConnection();
-            PreparedStatement pstmt=cn.prepareStatement("insert into customer values (?,?,?,?,?,?,?,?,?,?)");
-            pstmt.setString(1, id);
-            pstmt.setString(2, firstname);
-            pstmt.setString(3, lastname);
-            pstmt.setString(4, nic);
-            pstmt.setString(5, passport);
-            pstmt.setString(6, address);
-            pstmt.setString(7, date);
-            pstmt.setString(8, gender);
-            pstmt.setInt(9, contact);
-            pstmt.setBytes(10,userimage);
+            PreparedStatement pstmt=cn.prepareStatement("update customer set firstname=?,lastname=?,nic=?,passport=?,address=?,dob=?,gender=?,contact=?,photo=? where id=?");
+            
+            pstmt.setString(1, firstname);
+            pstmt.setString(2, lastname);
+            pstmt.setString(3, nic);
+            pstmt.setString(4, passport);
+            pstmt.setString(5, address);
+            pstmt.setString(6, date);
+            pstmt.setString(7, gender);
+            pstmt.setInt(8, contact);
+            pstmt.setBytes(9,userimage);
+            pstmt.setString(10, id);
             
             int result=pstmt.executeUpdate();
             
             if(result>0){
-                JOptionPane.showMessageDialog(null, "Registration Created");
+                JOptionPane.showMessageDialog(null, "Student Updated");
                 
-                autoid();
+                
                 txtfirstname.setText(" ");
                 txtlastname.setText(" ");
                 txtnic.setText(" ");
                 txtpassport.setText(" ");
                 txtaddress.setText(" ");
-                txtdob.setDateFormatString("yyyy--MM--dd");
+                txtdob.setDoubleBuffered(false);
                 r1.setText("");
                 r2.setText("");
                 
                 txtcontact.setText(" ");
                 String image=userimage.toString();
-                txtphoto.setDisabledIcon(frameIcon);
+                txtphoto.setDoubleBuffered(false);
             }
             
             
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
             e.printStackTrace();
         }
         } else {    
-            System.out.println("Value not inserted");
+            
             JOptionPane.showMessageDialog(null, "Insert all the values of the field");
         }
         
-        
-        
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_updateActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
                     this.hide();
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+      
+        //* ------ Action Performed for find button to fetch all the data of customer ----- *//
+        
+        String id=(String)txtcustid.getSelectedItem();
+        
+        /*------ Connection with the database and executing the query */
+        try {
+            Connection cn=DBhelper.getConnection();
+            PreparedStatement pstmt=cn.prepareStatement("select * from customer where id=?");
+            pstmt.setString(1, id);
+            ResultSet rs=pstmt.executeQuery();
+            
+            if(rs.next()){
+              String firstname=rs.getString("firstname");
+              String lastname=rs.getString("lastname");
+              String nic=rs.getString("nic");
+              String passport=rs.getString("passport");
+              String address=rs.getString("address");
+              
+              String date=rs.getString("dob");
+              Date date1=new SimpleDateFormat("yyyy-MM-dd").parse(date);
+              
+              String gender=rs.getString("gender");
+              if(gender.equals("male")){
+                  r1.setSelected(true);
+                  r2.setSelected(false);
+              }
+              
+              else{
+                  r1.setSelected(false);
+                  r2.setSelected(true);
+              }
+              
+            String contact=rs.getString("contact");
+            
+            /* Getting the bytes of image from database and change it into its corresponding format */
+            
+            Blob blob=rs.getBlob("photo");
+            byte[] _imagebytes=blob.getBytes(1, (int) blob.length());
+            ImageIcon image=new ImageIcon(_imagebytes);
+            Image im=image.getImage();
+            Image myImg=im.getScaledInstance(txtphoto.getWidth(), txtphoto.getHeight(), Image.SCALE_DEFAULT);
+            ImageIcon newImage=new ImageIcon(myImg);
+              
+            
+            
+            
+            txtfirstname.setText(firstname.trim());
+            txtlastname.setText(lastname.trim());
+            txtnic.setText(nic.trim());
+            txtpassport.setText(passport.trim());
+            txtaddress.setText(address.trim());
+            txtdob.setDate(date1);
+            txtcontact.setText(contact.trim());
+            txtphoto.setIcon(newImage);
+            
+            
+            
+              
+            }
+            
+            else{
+                JOptionPane.showMessageDialog(this, "Could not find any data");
+            }
+            
+            
+            
+            
+                    
+        } catch (HeadlessException | SQLException | ParseException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void txtcustidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcustidActionPerformed
+        
+     
+//        try {
+//            getId();
+//        } catch (SQLException ex) {
+//            Logger.getLogger(SearchCustomer.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+    }//GEN-LAST:event_txtcustidActionPerformed
+
+    
+    public final void getId() throws SQLException{
+      
+        /* ------ Fetching all the data fromt the database ------ */
+        
+        Connection cn=DBhelper.getConnection();
+        Statement st=cn.createStatement();
+        ResultSet rs=st.executeQuery("select id from customer");
+        
+        while(rs.next()){
+        
+            txtcustid.addItem(rs.getString("id"));
+            System.out.println("Error");
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -469,13 +573,14 @@ public class AddCustomer extends javax.swing.JInternalFrame {
     private javax.swing.JRadioButton r2;
     private javax.swing.JTextArea txtaddress;
     private javax.swing.JTextField txtcontact;
+    private javax.swing.JComboBox<String> txtcustid;
     private com.toedter.calendar.JDateChooser txtdob;
     private javax.swing.JTextField txtfirstname;
-    private javax.swing.JLabel txtid;
     private javax.swing.JTextField txtlastname;
     private javax.swing.JTextField txtnic;
     private javax.swing.JTextField txtpassport;
     private javax.swing.JLabel txtphoto;
+    private javax.swing.JButton update;
     // End of variables declaration//GEN-END:variables
 
     private ImageIcon newImageIcon(Image scaledInstance) {

@@ -5,7 +5,10 @@
  */
 package com.main;
 
+import com.tickets.Tickets;
 import com.customer.AddCustomer;
+import com.customer.SearchCustomer;
+import com.flight.AddFlight;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,13 +37,13 @@ public class Main extends javax.swing.JFrame {
 
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        customer = new javax.swing.JMenu();
+        searchcustomer = new javax.swing.JMenuItem();
+        addcustomer = new javax.swing.JMenuItem();
+        bookticket = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        jMenuItem5 = new javax.swing.JMenuItem();
+        addflight = new javax.swing.JMenu();
+        AddFlight = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
 
@@ -58,34 +61,54 @@ public class Main extends javax.swing.JFrame {
             .addGap(0, 693, Short.MAX_VALUE)
         );
 
-        jMenu1.setText("Customer ");
+        customer.setText("Customer ");
 
-        jMenuItem1.setText("Add Customers");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        searchcustomer.setText("Add Customers");
+        searchcustomer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                searchcustomerActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        customer.add(searchcustomer);
 
-        jMenuItem2.setText("Search Customers");
-        jMenu1.add(jMenuItem2);
+        addcustomer.setText("Search Customers");
+        addcustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addcustomerActionPerformed(evt);
+            }
+        });
+        customer.add(addcustomer);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(customer);
 
-        jMenu2.setText("Tickets");
+        bookticket.setText("Tickets");
+        bookticket.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bookticketActionPerformed(evt);
+            }
+        });
 
         jMenuItem3.setText("Book Ticket");
-        jMenu2.add(jMenuItem3);
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        bookticket.add(jMenuItem3);
 
-        jMenuBar1.add(jMenu2);
+        jMenuBar1.add(bookticket);
 
-        jMenu3.setText("Flight");
+        addflight.setText("Flight");
 
-        jMenuItem5.setText("Add Flight");
-        jMenu3.add(jMenuItem5);
+        AddFlight.setText("Add Flight");
+        AddFlight.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AddFlightActionPerformed(evt);
+            }
+        });
+        addflight.add(AddFlight);
 
-        jMenuBar1.add(jMenu3);
+        jMenuBar1.add(addflight);
 
         jMenu4.setText("User");
 
@@ -110,17 +133,59 @@ public class Main extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        
-        AddCustomer cus = null;
+    private void searchcustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchcustomerActionPerformed
+
+        AddCustomer addcus = null;
         try {
-            cus = new AddCustomer();
+            addcus = new AddCustomer();
         } catch (SQLException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
-        jDesktopPane1.add(cus);
-        cus.setVisible(true);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+        jDesktopPane1.add(addcus);
+        addcus.setVisible(true);
+    }//GEN-LAST:event_searchcustomerActionPerformed
+
+    private void addcustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addcustomerActionPerformed
+
+        SearchCustomer searchcus = null;
+        try {
+            searchcus = new SearchCustomer();
+        } catch (SQLException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        jDesktopPane1.add(searchcus).setVisible(true);
+
+
+    }//GEN-LAST:event_addcustomerActionPerformed
+
+    private void AddFlightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddFlightActionPerformed
+
+        AddFlight addflight = null;
+        try {
+            addflight = new AddFlight();
+        } catch (SQLException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        jDesktopPane1.add(addflight).setVisible(true);
+
+
+    }//GEN-LAST:event_AddFlightActionPerformed
+
+    private void bookticketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookticketActionPerformed
+        
+       
+        
+    }//GEN-LAST:event_bookticketActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+         Tickets tickets = null;
+        try {
+            tickets = new Tickets();
+        } catch (SQLException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        jDesktopPane1.add(tickets).setVisible(true);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -158,16 +223,16 @@ public class Main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem AddFlight;
+    private javax.swing.JMenuItem addcustomer;
+    private javax.swing.JMenu addflight;
+    private javax.swing.JMenu bookticket;
+    private javax.swing.JMenu customer;
     private javax.swing.JDesktopPane jDesktopPane1;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem searchcustomer;
     // End of variables declaration//GEN-END:variables
 }

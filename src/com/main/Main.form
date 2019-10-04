@@ -4,47 +4,59 @@
   <NonVisualComponents>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
       <SubComponents>
-        <Menu class="javax.swing.JMenu" name="jMenu1">
+        <Menu class="javax.swing.JMenu" name="customer">
           <Properties>
             <Property name="text" type="java.lang.String" value="Customer "/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+            <MenuItem class="javax.swing.JMenuItem" name="searchcustomer">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Add Customers"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem1ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchcustomerActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
+            <MenuItem class="javax.swing.JMenuItem" name="addcustomer">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Search Customers"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addcustomerActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu2">
+        <Menu class="javax.swing.JMenu" name="bookticket">
           <Properties>
             <Property name="text" type="java.lang.String" value="Tickets"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bookticketActionPerformed"/>
+          </Events>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem3">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Book Ticket"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem3ActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu3">
+        <Menu class="javax.swing.JMenu" name="addflight">
           <Properties>
             <Property name="text" type="java.lang.String" value="Flight"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem5">
+            <MenuItem class="javax.swing.JMenuItem" name="AddFlight">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Add Flight"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AddFlightActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
